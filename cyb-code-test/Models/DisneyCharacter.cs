@@ -16,6 +16,20 @@ namespace cyb_code_test.Models
         [JsonProperty("tvShows")]
         public List<string> TvShows { get; set; }
 
+        [JsonIgnore]
+        public List<string> FilmsAndTvShows
+        {
+            get
+            {
+                List<string> filmsAndTvShows = Films;
+                filmsAndTvShows.AddRange(TvShows);
+
+                filmsAndTvShows = filmsAndTvShows.OrderBy(s => Guid.NewGuid()).ToList();
+
+                return filmsAndTvShows;
+            }
+        }
+
         [JsonProperty("videoGames")]
         public List<string> VideoGames { get; set; }
 

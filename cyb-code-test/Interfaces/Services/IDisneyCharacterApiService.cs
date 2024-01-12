@@ -6,6 +6,7 @@ namespace cyb_code_test.Interfaces.Services
     {
         int Count();
         DisneyCharacter FetchByPosition(int index);
+        DisneyCharacter? FetchById(int id);
         List<DisneyCharacter> List(int page, int pageSize);
     }
 }

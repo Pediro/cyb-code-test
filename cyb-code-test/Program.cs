@@ -1,4 +1,6 @@
+using cyb_code_test.Interfaces.Operations;
 using cyb_code_test.Interfaces.Services;
+using cyb_code_test.Operations;
 using cyb_code_test.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -6,8 +8,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
-// Dependency Injection: Adding Operations
+// Dependency Injection: Adding Services
 builder.Services.AddSingleton<IDisneyCharacterApiService, DisneyCharacterApiService>();
+
+// Dependency Injection: Adding Operations
+builder.Services.AddScoped<IGuessTheCharacterOperations, GuessTheCharacterOperations>();
 
 var app = builder.Build();
 

@@ -14,38 +14,31 @@ namespace cyb_code_test.Operations
             _disneyCharacterApiService = disneyCharacterApiService;
         }
 
-        public GameDataViewModel FetchGameData()
+        public List<Question> FetchGameData()
         {
             int numOfCharacters = _disneyCharacterApiService.Count();
 
             //Generating a list of random unique indexes to be used to fetch random disney characters
             Random rand = new();
-            IEnumerable<int> indexes = Enumerable.Range(0, 20)
+            IEnumerable<int> indexes = Enumerable.Range(0, numOfCharacters)
                                          .Select(i => new Tuple<int, int>(rand.Next(numOfCharacters), i))
                                          .OrderBy(i => i.Item1)
-                                         .Select(i => i.Item2);
+                                         .Select(i => i.Item2)
+                                         .Take(20);
 
-            //The following requests all the data from the disney api asynchronously then wait for all the threads to finish at the end
             List<Question> questions = new();
-
-            //Trigger all requests to run
             foreach (int index in indexes)
             {
                 DisneyCharacter questionCharacter = _disneyCharacterApiService.FetchByPosition(index);
 
-                List<string> filmsAndTvShows = questionCharacter.Films;
-                filmsAndTvShows.AddRange(questionCharacter.TvShows);
-
                 //Some characters are not in any films and tv shows. Ignore them
-                if (filmsAndTvShows.Count == 0)
+                if (questionCharacter.FilmsAndTvShows.Count == 0)
                 {
                     continue;
                 }
 
-                //Randomising the list of films and tv shows so we get a variety of films and tv shows as the correct answer
-                filmsAndTvShows = filmsAndTvShows.OrderBy(s => Guid.NewGuid()).ToList();
 
-                string correctAnswer = filmsAndTvShows.First();
+                string correctAnswer = questionCharacter.FilmsAndTvShows.First();
                 List<string> answers = FetchIncorrectAnswers(numOfCharacters, questionCharacter);
                 answers.Add(correctAnswer);
 
@@ -66,17 +59,16 @@ namespace cyb_code_test.Operations
                 }
             }
 
-            return new GameDataViewModel()
-            {
-                Questions = questions
-            };
+            return questions;
         }
 
         public List<string> FetchIncorrectAnswers(int numOfCharacters, DisneyCharacter character)
         {
-            int pageCount = numOfCharacters % 6;
+            int take = 10;
+
+            int pageCount = numOfCharacters / take;
             int index = new Random().Next(1, pageCount);
-            var apiResponse = _disneyCharacterApiService.List(index, 6);
+            var apiResponse = _disneyCharacterApiService.List(index, take);
 
             //To try and avoid situations where we get answers similar to each other such as DuckTales and DuckTales (2017 series)
             //We are avoiding this by only returning the first film or tv show
@@ -89,20 +81,21 @@ namespace cyb_code_test.Operations
                     continue;
                 }
 
-                List<string> filmsAndTvShows = item.Films;
-                filmsAndTvShows.AddRange(item.TvShows);
-
-                if (filmsAndTvShows.Count == 0)
+                if (item.FilmsAndTvShows.Count == 0)
                 {
                     continue;
                 }
 
-                if (filmsAndTvShows.Count > 1)
+                string selectedFilmOrTvShow = item.FilmsAndTvShows.First();
+
+                // Avoid adding the same film or tv show into answers
+                // Also avoiding characters that might share films or tv shows, which would cause confusion to the user as two answers could be valid
+                if (character.FilmsAndTvShows.Contains(selectedFilmOrTvShow) || incorrectAnswers.Contains(selectedFilmOrTvShow))
                 {
-                    filmsAndTvShows = filmsAndTvShows.OrderBy(s => Guid.NewGuid()).ToList(); //Randomise order
+                    continue;
                 }
 
-                incorrectAnswers.Add(filmsAndTvShows.First());
+                incorrectAnswers.Add(selectedFilmOrTvShow);
 
                 if (incorrectAnswers.Count == 3)
                 {

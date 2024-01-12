@@ -35,6 +35,11 @@ namespace cyb_code_test.Services
             return disneyCharacter;
         }
 
+        public DisneyCharacter? FetchById(int id)
+        {
+            return _disneyCharactersDb.FirstOrDefault(d => d.Id == id);
+        }
+
         // Due to limitations in disney api, where it kept returning 503 if I sent to many requests I've downloaded all the data into a json file to be used for this test
         private List<DisneyCharacter> ReadFromJson()
         {

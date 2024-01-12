@@ -1,4 +1,5 @@
-﻿using cyb_code_test.Operations;
+﻿using cyb_code_test.Models;
+using cyb_code_test.Operations;
 using cyb_code_test.Services;
 using Microsoft.Extensions.Configuration;
 
@@ -26,11 +27,21 @@ namespace cyb_code_test_tests
         [Test]
         public async Task FetchGameDataAsync_ShouldProduceGameData_TrueAsync()
         {
-            var gameDataViewModel = _guessTheCharacterOperations.FetchGameData();
+            List<Question> questions = _guessTheCharacterOperations.FetchGameData();
 
-            Assert.AreEqual(gameDataViewModel.Questions.Count(), 10);
-            int totalNumberOfAnswers = gameDataViewModel.Questions.Select(q => q.Answers.Count()).Sum();
+            Assert.AreEqual(questions.Count(), 10);
+            int totalNumberOfAnswers = questions.Select(q => q.Answers.Count()).Sum();
             Assert.AreEqual(totalNumberOfAnswers, 40);
+
+            foreach (Question question in questions)
+            {
+                DisneyCharacter? character = _disneyCharacterApiService.FetchById(question.Id);
+                List<string> filmsAndTvShows = character.Films;
+                filmsAndTvShows.AddRange(character.TvShows);
+
+                Assert.IsTrue(question.Answers.Count == question.Answers.Distinct().Count()); //There shouldn't be any duplicates
+                Assert.IsTrue(question.Answers.Intersect(filmsAndTvShows).Count() > 0);//A correct answer should in the options
+            }
         }
     }
 }
