@@ -26,7 +26,7 @@ namespace cyb_code_test_tests
         [Test]
         public async Task FetchGameDataAsync_ShouldProduceGameData_TrueAsync()
         {
-            var gameDataViewModel = await _guessTheCharacterOperations.FetchGameData();
+            var gameDataViewModel = _guessTheCharacterOperations.FetchGameData();
 
             Assert.AreEqual(gameDataViewModel.Questions.Count(), 10);
             int totalNumberOfAnswers = gameDataViewModel.Questions.Select(q => q.Answers.Count()).Sum();

@@ -1,17 +1,15 @@
-﻿using cyb_code_test.Interfaces.Services;
-using cyb_code_test.Models;
+﻿using cyb_code_test.Interfaces.Operations;
 using Microsoft.AspNetCore.Mvc;
-using System;
 
 namespace cyb_code_test.Controllers
 {
     public class GuessTheCharacterController : Controller
     {
-        private readonly IDisneyCharacterApiService _disneyCharacterApiService;
+        private readonly IGuessTheCharacterOperations _guessTheCharacterOperations;
 
-        public GuessTheCharacterController(IDisneyCharacterApiService disneyCharacterApiService)
+        public GuessTheCharacterController(IGuessTheCharacterOperations guessTheCharacterOperations)
         {
-            _disneyCharacterApiService = disneyCharacterApiService;
+            _guessTheCharacterOperations = guessTheCharacterOperations;
         }
 
         public IActionResult Index()
@@ -19,9 +17,11 @@ namespace cyb_code_test.Controllers
             return View();
         }
 
-        public async Task<IActionResult> GameAsync()
+        public IActionResult Game()
         {
-            return View();
+            var gameDataViewModel = _guessTheCharacterOperations.FetchGameData();
+
+            return View(gameDataViewModel);
         }
 
     }

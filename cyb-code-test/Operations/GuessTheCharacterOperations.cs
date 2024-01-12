@@ -1,10 +1,11 @@
-﻿using cyb_code_test.Interfaces.Services;
+﻿using cyb_code_test.Interfaces.Operations;
+using cyb_code_test.Interfaces.Services;
 using cyb_code_test.Models;
 using System.Threading.Tasks;
 
 namespace cyb_code_test.Operations
 {
-    public class GuessTheCharacterOperations
+    public class GuessTheCharacterOperations : IGuessTheCharacterOperations
     {
         private readonly IDisneyCharacterApiService _disneyCharacterApiService;
 
@@ -13,7 +14,7 @@ namespace cyb_code_test.Operations
             _disneyCharacterApiService = disneyCharacterApiService;
         }
 
-        public async Task<GameDataViewModel> FetchGameData()
+        public GameDataViewModel FetchGameData()
         {
             int numOfCharacters = _disneyCharacterApiService.Count();
 
@@ -91,8 +92,9 @@ namespace cyb_code_test.Operations
                 List<string> filmsAndTvShows = item.Films;
                 filmsAndTvShows.AddRange(item.TvShows);
 
-                if (filmsAndTvShows.Count == 0) { 
-                    continue; 
+                if (filmsAndTvShows.Count == 0)
+                {
+                    continue;
                 }
 
                 if (filmsAndTvShows.Count > 1)
