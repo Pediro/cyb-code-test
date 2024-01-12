@@ -1,0 +1,51 @@
+﻿@{
+    Layout = null;
+}
+@model GameDataViewModel
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Guess The Character</title>
+</head>
+<body>
+    <style>
+        header {
+            text-align: center;
+        }
+
+        main {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            width:100%;
+            margin: auto;
+        }
+
+            main .answers-container {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                width: 100%;
+                gap: 15px;
+            }
+    </style>
+    <header>
+        <a>Previous</a>
+        <h1>Guess The Character</h1>
+        <a>Next</a>
+    </header>
+    <main>
+        <img src="https://static.wikia.nocookie.net/disney/images/d/d3/Vlcsnap-2015-05-06-23h04m15s601.png" />
+        <div class="answers-container">
+            <button>A</button>
+            <button>B</button>
+            <button>C</button>
+            <button>D</button>
+        </div>
+    </main>
+</body>
+</html>
