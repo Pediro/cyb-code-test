@@ -67,11 +67,18 @@
     goToNextQuestion() {
         this.currentQuestionIndex++;
 
-        if (this.currentQuestionIndex > 9) {
+        if (this.currentQuestionIndex > this.questions.length - 1) {
             this.goToSubmitScreen();
-        } else {
-            this.initQuestion();
+            return;
         }
+
+        // Only go to questions that have not been answered, this allows us to do a skip function on the submit page
+        if (this.questions[this.currentQuestionIndex].selectedAnswer === null) {
+            this.initQuestion();
+            return;
+        }
+
+        this.goToNextQuestion();            
     }
 
     goToPreviousQuestion() {
@@ -82,6 +89,12 @@
         }
 
         this.initQuestion();
+    }
+
+    goToQuestion(event) {
+        this.currentQuestionIndex = parseInt(event.currentTarget.dataset.index);
+        this.initQuestion();
+        this.renderQuestionPage();
     }
 
     submitAnswers() {
@@ -118,6 +131,8 @@
         var answersContainer = document.querySelector("[data-set-answers-container]");
         var navButton = document.querySelector("[data-set-nav-button]");
         var firstMissingAnswerIndex = null;
+        answersContainer.innerHTML = "";
+
         this.questions.forEach((question, index) => {
             if (question.selectedAnswer === null && firstMissingAnswerIndex === null) {
                 firstMissingAnswerIndex = index;
@@ -125,6 +140,7 @@
 
             var answer = document.createElement("div");
             answer.classList.add("answer");
+            answer.dataset.index = index;
 
             var img = document.createElement("img");
             img.src = question.imageUrl;
@@ -133,6 +149,8 @@
             var selectedAnswer = document.createElement("text");
             selectedAnswer.textContent = question.selectedAnswer ?? "";
             answer.appendChild(selectedAnswer);
+
+            answer.addEventListener("click", this.goToQuestion.bind(this));
 
             answersContainer.append(answer);
         });
@@ -166,6 +184,8 @@
         var resultsContainer = document.querySelector("[data-set-results-container]");
 
         var correctCount = 0;
+        resultsContainer.innerHTML = "";
+
         results.forEach((result) => {
             var resultElement = document.createElement("div");
             resultElement.classList.add("answer");
@@ -189,7 +209,7 @@
         });
 
         var pageTitleElement = document.querySelector("[data-set-page-title]");
-        pageTitleElement.textContent = `Well done! You got ${correctCount} of the questions correct.`;
+        pageTitleElement.textContent = `You got ${correctCount} of the questions correct.`;
 
         var resetButton = document.querySelector("[data-set-reset-button]");
         resetButton.addEventListener("click", () => { location.reload(); });

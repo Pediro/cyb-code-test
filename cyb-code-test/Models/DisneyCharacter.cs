@@ -22,6 +22,11 @@ namespace cyb_code_test.Models
         {
             get
             {
+                if (_filmsAndTvShows != null)
+                {
+                    return _filmsAndTvShows;
+                }
+
                 _filmsAndTvShows = Films;
                 _filmsAndTvShows.AddRange(TvShows);
 

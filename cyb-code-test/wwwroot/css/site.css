@@ -1,5 +1,15 @@
+body {
+    margin: 0px;
+    background-color: #a6a6e117;
+    font-family: Helvetica;
+}
+
 header {
     text-align: center;
+}
+
+main {
+    margin: 5px;
 }
 
 .main-content {
@@ -21,7 +31,7 @@ header {
         display: grid;
         grid-template-columns: 1fr 1fr;
         width: 100%;
-        gap: 15px;
+        gap: 5px;
     }
 
     .main-content .answers-container {
@@ -36,14 +46,24 @@ header {
             flex-direction: row;
             justify-content: space-between;
             gap: 20px;
+            padding: 5px;
+            font-size: 20px;
+            align-items: center;
+            cursor: pointer;
         }
+
+            .main-content .answers-container .answer:hover {
+                opacity: 0.5;
+            }
 
             .main-content .answers-container .answer.correct {
                 background-color: green;
+                color: white;
             }
 
             .main-content .answers-container .answer.incorrect {
                 background-color: darkred;
+                color: white;
             }
 
             .main-content .answers-container .answer img {
@@ -55,6 +75,46 @@ header {
                 padding-right: 10px;
             }
 
+button {
+    height: 80px;
+    font-size: 15px;
+    font-weight: bold;
+    color: black;
+    background-color: white;
+    border-radius: 4px;
+    min-width: 300px;
+}
+
+    button:hover, .main-content button:active {
+        color: white;
+        background-color: black;
+    }
+
+header {
+    border-top: 0;
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 2px;
+    border-style: solid;
+    border-color: #80808038;
+    background-color: white;
+}
+
+    header h1 {
+        padding-top: 20px;
+        margin-top: 0;
+    }
+
 .hidden {
     display: none;
+}
+
+/* Styles for screens below 850px */
+@media only screen and (max-width: 849px) {
+    .main-content .answer-options-container {
+        grid-template-columns: 1fr;
+    }
+    .main-content .answers-container {
+        grid-template-columns: 1fr;
+    }
 }

@@ -24,19 +24,18 @@ namespace cyb_code_test.Operations
                                          .Select(i => new Tuple<int, int>(rand.Next(numOfCharacters), i))
                                          .OrderBy(i => i.Item1)
                                          .Select(i => i.Item2)
-                                         .Take(20);
+                                         .Take(30);
 
             List<Question> questions = new();
             foreach (int index in indexes)
             {
                 DisneyCharacter questionCharacter = _disneyCharacterApiService.FetchByPosition(index);
 
-                //Some characters are not in any films and tv shows. Ignore them
-                if (questionCharacter.FilmsAndTvShows.Count == 0)
+                //Some characters are not in any films and tv shows and some don't have an image. Ignore them
+                if (questionCharacter.FilmsAndTvShows.Count == 0 || string.IsNullOrEmpty(questionCharacter.ImageUrl))
                 {
                     continue;
                 }
-
 
                 string correctAnswer = questionCharacter.FilmsAndTvShows.First();
                 List<string> answers = FetchIncorrectAnswers(numOfCharacters, questionCharacter);
