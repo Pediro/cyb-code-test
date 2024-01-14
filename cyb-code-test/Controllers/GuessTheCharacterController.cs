@@ -14,6 +14,11 @@ namespace cyb_code_test.Controllers
             _guessTheCharacterOperations = guessTheCharacterOperations;
         }
 
+        public IActionResult Error()
+        {
+            return View();
+        }
+
         public IActionResult Game()
         {
             return View();
@@ -26,14 +31,8 @@ namespace cyb_code_test.Controllers
             try
             {
                 return new JsonResult(_guessTheCharacterOperations.FetchGameData());
-            } catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return new JsonResult(new ErrorResponse { 
-                    StatusCode = 500,
-                    ErrorMessage = "Internal Server Error"
-                });
-            } finally
+            } 
+            finally
             {
                 Console.WriteLine("Completed fetching game data");
             }            
@@ -46,15 +45,6 @@ namespace cyb_code_test.Controllers
             try
             {
                 return new JsonResult(_guessTheCharacterOperations.CheckAnswers(submittedAnswers));
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-                return new JsonResult(new ErrorResponse
-                {
-                    StatusCode = 500,
-                    ErrorMessage = "Internal Server Error"
-                });
             }
             finally
             {

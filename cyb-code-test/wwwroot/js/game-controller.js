@@ -11,14 +11,16 @@
 
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState == XMLHttpRequest.DONE) {
-                if (httpRequest.status == 200) {
-                    var response = httpRequest.responseText;
-                    this.questions = JSON.parse(response);
-
-                    this.initQuestion();
-                    this.addEventListeners();
-                    this.renderQuestionPage();
+                if (httpRequest.status !== 200) {
+                    location.href = "/guessTheCharacter/error";
                 }
+
+                var response = httpRequest.responseText;
+                this.questions = JSON.parse(response);
+
+                this.initQuestion();
+                this.addEventListeners();
+                this.renderQuestionPage();
             }
         }.bind(this);
 
@@ -87,11 +89,13 @@
 
         httpRequest.onreadystatechange = function () {
             if (httpRequest.readyState == XMLHttpRequest.DONE) {
-                if (httpRequest.status == 200) {
-                    var response = httpRequest.responseText;
-                    var results = JSON.parse(response);
-                    this.goToResultsPage(results);
+                if (httpRequest.status !== 200) {
+                    location.href = "/guessTheCharacter/error";
                 }
+
+                var response = httpRequest.responseText;
+                var results = JSON.parse(response);
+                this.goToResultsPage(results);
             }
         }.bind(this);
 
@@ -159,16 +163,16 @@
         var resultsPage = document.querySelector("[data-set-results-page]");
         resultsPage.classList.remove("hidden");
 
-        var pageTitleElement = document.querySelector("[data-set-page-title]");
-        pageTitleElement.textContent = "And this is how you did...";
-
         var resultsContainer = document.querySelector("[data-set-results-container]");
-        results.forEach((result, index) => {
+
+        var correctCount = 0;
+        results.forEach((result) => {
             var resultElement = document.createElement("div");
             resultElement.classList.add("answer");
 
             if (result.isCorrectAnswer) {
                 resultElement.classList.add("correct");
+                correctCount++;
             } else {
                 resultElement.classList.add("incorrect");
             }
@@ -183,6 +187,9 @@
 
             resultsContainer.append(resultElement);
         });
+
+        var pageTitleElement = document.querySelector("[data-set-page-title]");
+        pageTitleElement.textContent = `Well done! You got ${correctCount} of the questions correct.`;
 
         var resetButton = document.querySelector("[data-set-reset-button]");
         resetButton.addEventListener("click", () => { location.reload(); });

@@ -1,4 +1,5 @@
-﻿using cyb_code_test.Interfaces.Services;
+﻿using cyb_code_test.Exceptions;
+using cyb_code_test.Interfaces.Services;
 using cyb_code_test.Models;
 using Newtonsoft.Json;
 
@@ -40,14 +41,14 @@ namespace cyb_code_test.Services
             return _disneyCharactersDb.FirstOrDefault(d => d.Id == id);
         }
 
-        // Due to limitations in disney api, where it kept returning 503 if I sent to many requests I've downloaded all the data into a json file to be used for this test
+        // Due to limitations in Disney api, where it kept returning 503 if I sent to many requests I've downloaded all the data into a json file to be used for this test
         private List<DisneyCharacter> ReadFromJson()
         {
             string? disneyCharacterJsonPath = _configuration.GetValue<string>("DisneyCharacterJsonPath");
 
             if (string.IsNullOrEmpty(disneyCharacterJsonPath))
             {
-                throw new Exception("Missing Disney API base url");
+                throw new EntityNotFoundException("Missing Disney file path");
             }
 
             using StreamReader reader = new(disneyCharacterJsonPath);

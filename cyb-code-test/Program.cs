@@ -1,5 +1,6 @@
 using cyb_code_test.Interfaces.Operations;
 using cyb_code_test.Interfaces.Services;
+using cyb_code_test.Middlewares;
 using cyb_code_test.Operations;
 using cyb_code_test.Services;
 
@@ -14,7 +15,11 @@ builder.Services.AddSingleton<IDisneyCharacterApiService, DisneyCharacterApiServ
 // Dependency Injection: Adding Operations
 builder.Services.AddScoped<IGuessTheCharacterOperations, GuessTheCharacterOperations>();
 
+
 var app = builder.Build();
+
+// Add middlewares
+app.UseMiddleware<ErrorHandlerMiddleware>(); // A middleware for logging exceptions and preventing callers from getting sensitive data
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

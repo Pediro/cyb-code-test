@@ -110,13 +110,18 @@ namespace cyb_code_test.Operations
         {
             if (submittedAnswers == null)
             {
-                throw new Exception("Missing submitted answers");
+                throw new ArgumentException("Missing submitted answers");
             }
 
             List<Result> results = new();
             foreach (Question question in submittedAnswers)
             {
-                DisneyCharacter character = _disneyCharacterApiService.FetchById(question.Id);
+                DisneyCharacter? character = _disneyCharacterApiService.FetchById(question.Id);
+
+                if (character == null)
+                {
+                    throw new Exception("Failed to find Disney character");
+                }
 
                 results.Add(new Result
                 {
