@@ -10,6 +10,7 @@ namespace cyb_code_test_tests
         DisneyCharacterApiService _disneyCharacterApiService;
         GuessTheCharacterOperations _guessTheCharacterOperations;
 
+        //Setting up Disney Character data
         [SetUp]
         public void Init()
         {
@@ -24,6 +25,7 @@ namespace cyb_code_test_tests
             _guessTheCharacterOperations = new(_disneyCharacterApiService);
         }
 
+        //Expecting to find 10 questions where each question has a valid answer and there are no duplicate answers in the available options
         [Test]
         public void FetchGameDataAsync_ShouldProduceGameData_True()
         {
@@ -44,6 +46,7 @@ namespace cyb_code_test_tests
             }
         }
 
+        //Checking the logic can determine if the given answer is correct or not, expecting a correct answer
         [Test]
         public void CheckAnswers_ShouldReturnIsCorrectAnswer_True()
         {
@@ -69,6 +72,7 @@ namespace cyb_code_test_tests
             Assert.AreEqual(results.First().IsCorrectAnswer, true);
         }
 
+        //Checking the logic can determine if the given answer is correct or not, expecting a incorrect answer
         [Test]
         public void CheckAnswers_ShouldReturnIsCorrectAnswer_False()
         {

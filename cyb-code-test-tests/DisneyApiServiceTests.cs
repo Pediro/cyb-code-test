@@ -11,6 +11,7 @@ namespace cyb_code_test_tests
     {
         DisneyCharacterApiService disneyCharacterApiService;
 
+        //Setting up the data from the Disney Character API
         [SetUp]
         public void Init()
         {
@@ -21,6 +22,8 @@ namespace cyb_code_test_tests
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(configurationDictionary).Build();
             disneyCharacterApiService = new(configuration);
         }
+
+        //Checking that we return the correct character when providing the service with a position
         [Test]
         public void FetchDisneyCharacters_ReturnsAchilles_True()
         {
@@ -48,12 +51,37 @@ namespace cyb_code_test_tests
             Assert.AreEqual(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(achilles));
         }
 
+        //Checking we retrieve the correct amount of items and that the offset logic works
         [Test]
         public void ListDisneyCharacters_ReturnsQueriedAmount_True()
         {
-            List<DisneyCharacter> response = disneyCharacterApiService.List(1, 10);
+            List<DisneyCharacter> response = disneyCharacterApiService.List(2, 10);
 
             Assert.AreEqual(10, response.Count);
+
+            DisneyCharacter ambrose = response.ElementAt(0);
+
+            DisneyCharacter expected = new()
+            {
+                Id = 204,
+                Films = new List<string> { "The Robber Kitten",
+                "Mickey's Polo Team" },
+                ShortFilms = new List<string>(),
+                TvShows = new List<string>(),
+                VideoGames = new List<string>(),
+                ParkAttractions = new List<string>(),
+                Allies = new List<string>(),
+                Enemies = new List<string>(),
+                SourceUrl = "https://disney.fandom.com/wiki/Ambrose",
+                Name = "Ambrose",
+                ImageUrl = "https://static.wikia.nocookie.net/disney/images/d/d3/Ambrose.jpg",
+                CreatedAt = DateTime.Parse("2021-04-12T01:32:29.083Z").ToUniversalTime(),
+                UpdatedAt = DateTime.Parse("2021-12-20T20:39:19.408Z").ToUniversalTime(),
+                Url = "https://api.disneyapi.dev/characters/204"
+            };
+
+            //Json comparison so I can avoid making a object compare override method
+            Assert.AreEqual(JsonConvert.SerializeObject(expected), JsonConvert.SerializeObject(ambrose));
         }
     }
 }

@@ -158,19 +158,23 @@
                 firstMissingAnswerIndex = index;
             }
 
+            //Creating row to render answer
             var answer = document.createElement("div");
             answer.classList.add("item");
             answer.classList.add("answer");
             answer.dataset.index = index;
 
+            //Attaching image to row
             var img = document.createElement("img");
             img.src = question.imageUrl;
             answer.appendChild(img);
 
+            //Attaching answer to row
             var selectedAnswer = document.createElement("text");
             selectedAnswer.textContent = question.selectedAnswer ?? "";
             answer.appendChild(selectedAnswer);
 
+            //Attaching link to question, so users can go back and change their answer
             answer.addEventListener("click", this.goToQuestion.bind(this));
             this.answersContainer.append(answer);
         });
@@ -197,10 +201,13 @@
         this.resultsContainer.innerHTML = "";
 
         results.forEach((result) => {
+
+            //Creating row for results
             var resultElement = document.createElement("div");
             resultElement.classList.add("item");
             resultElement.classList.add("result");
 
+            //Highlighting red or green depending on if it was correct or not
             if (result.isCorrectAnswer) {
                 resultElement.classList.add("correct");
                 correctCount++;
@@ -208,10 +215,12 @@
                 resultElement.classList.add("incorrect");
             }
 
+            //Attaching image to row
             var img = document.createElement("img");
             img.src = result.imageUrl;
             resultElement.appendChild(img);
 
+            //Attaching answer to row
             var selectedAnswer = document.createElement("text");
             selectedAnswer.textContent = result.selectedAnswer ?? "";
             resultElement.appendChild(selectedAnswer);
