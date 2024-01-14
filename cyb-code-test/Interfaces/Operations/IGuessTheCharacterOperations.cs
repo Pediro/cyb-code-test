@@ -6,5 +6,6 @@ namespace cyb_code_test.Interfaces.Operations
     {
         List<Question> FetchGameData();
         List<string> FetchIncorrectAnswers(int numOfCharacters, DisneyCharacter character);
+        List<Result> CheckAnswers(List<Question> submittedAnswers);
     }
 }

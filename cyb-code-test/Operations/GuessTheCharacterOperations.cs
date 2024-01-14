@@ -105,5 +105,30 @@ namespace cyb_code_test.Operations
 
             return incorrectAnswers;
         }
+
+        public List<Result> CheckAnswers(List<Question> submittedAnswers)
+        {
+            if (submittedAnswers == null)
+            {
+                throw new Exception("Missing submitted answers");
+            }
+
+            List<Result> results = new();
+            foreach (Question question in submittedAnswers)
+            {
+                DisneyCharacter character = _disneyCharacterApiService.FetchById(question.Id);
+
+                results.Add(new Result
+                {
+                    AcceptedAnswers = character.FilmsAndTvShows,
+                    CharacterName = question.CharacterName,
+                    SelectedAnswer = question.SelectedAnswer,
+                    IsCorrectAnswer = character.FilmsAndTvShows.Contains(question.SelectedAnswer),
+                    ImageUrl = question.ImageUrl,
+                });
+            }
+
+            return results;
+        }
     }
 }

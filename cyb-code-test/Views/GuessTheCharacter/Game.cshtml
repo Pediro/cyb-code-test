@@ -8,118 +8,40 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guess The Character</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 </head>
 <body>
-    <style>
-        header {
-            text-align: center;
-        }
-
-        main {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-            width:100%;
-            margin: auto;
-        }
-
-            main .answers-container {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                width: 100%;
-                gap: 15px;
-            }
-    </style>
     <header>
         <h1 data-set-page-title>Title</h1>
     </header>
     <main>
-        <img src="https://static.wikia.nocookie.net/disney/images/d/d3/Vlcsnap-2015-05-06-23h04m15s601.png" data-set-question-image/>
-        <div class="answers-container">
-            <button data-set-answer>A</button>
-            <button data-set-answer>B</button>
-            <button data-set-answer>C</button>
-            <button data-set-answer>D</button>
+        <div class="main-content" data-set-questions-page>
+            <img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg" data-set-question-image />
+            <div class="answer-options-container">
+                <button data-set-answer>A</button>
+                <button data-set-answer>B</button>
+                <button data-set-answer>C</button>
+                <button data-set-answer>D</button>
+            </div>
+        </div>
+        <div class="main-content submit-page" data-set-submit-page>
+            <div data-set-answers-container class="answers-container">
+            </div>
+            <div class="submit-buttons-container">
+                <button data-set-submit-button>Submit answers</button>
+                <button data-set-nav-button></button>
+            </div>
+        </div>
+        <div class="main-content results-page" data-set-results-page>
+            <div data-set-results-container class="answers-container"></div>
+            <button data-set-reset-button>Restart quiz</button>
         </div>
     </main>
 
+    <script src="~/js/game-controller.js" asp-append-version="true"></script>
     <script>
-        var questions = {};
-        var currentQuestion = {};
-        var currentQuestionIndex = 0;
-
-        var pageTitleElement = document.querySelector("[data-set-page-title]");
-        var imageElement = document.querySelector("[data-set-question-image]");
-        var answerOptions = document.querySelectorAll("[data-set-answer]");
-
-        var fetchGameData = function() {
-            var httpRequest = new XMLHttpRequest();
-
-            httpRequest.onreadystatechange = function() {
-                if (httpRequest.readyState == XMLHttpRequest.DONE) {
-                    if (httpRequest.status == 200) {
-                        var response = httpRequest.responseText;
-                        console.log(response);
-                        questions = JSON.parse(response);
-
-                        initQuestion();
-                        addEventListeners();
-                    }
-                }
-            }
-
-            httpRequest.open("get", "/guessTheCharacter/fetchGameData", true);
-            httpRequest.send();
-        };
-
-        var addEventListeners = function() {
-            answerOptions.forEach((element, index) => {
-                element.addEventListener("click", () => {
-                    questions[currentQuestionIndex].selectedAnswer = element.textContent;
-                    goToNextQuestion();
-                });
-            });
-        }
-
-        var initQuestion = function() {
-            currentQuestion = questions[currentQuestionIndex];
-
-            pageTitleElement.textContent = "Which film or tv show has " + currentQuestion.characterName + " been in?";
-            
-            imageElement.src = currentQuestion.imageUrl;
-            
-            answerOptions.forEach((element, index) => {
-                element.textContent = currentQuestion.answers[index];
-            });
-        };
-
-        var goToNextQuestion = function() {
-            currentQuestionIndex++;
-
-            if (currentQuestionIndex > 9) {
-                goToSubmitScreen();
-            }
-
-            initQuestion();
-        }
-
-        var goToPreviousQuestion = function() {
-            currentQuestionIndex++;
-
-            if (currentQuestionIndex < 0) {
-                currentQuestionIndex = 0;
-            }
-
-            initQuestion();
-        }
-
-        var goToSubmitScreen = function() {
-            console.log("submit screen");
-        }
-
-        fetchGameData();
+        let gameController = new GameController();
+        gameController.init();
     </script>
 </body>
 </html>

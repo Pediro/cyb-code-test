@@ -16,17 +16,18 @@ namespace cyb_code_test.Models
         [JsonProperty("tvShows")]
         public List<string> TvShows { get; set; }
 
+        private List<string> _filmsAndTvShows;
         [JsonIgnore]
         public List<string> FilmsAndTvShows
         {
             get
             {
-                List<string> filmsAndTvShows = Films;
-                filmsAndTvShows.AddRange(TvShows);
+                _filmsAndTvShows = Films;
+                _filmsAndTvShows.AddRange(TvShows);
 
-                filmsAndTvShows = filmsAndTvShows.OrderBy(s => Guid.NewGuid()).ToList();
+                _filmsAndTvShows = _filmsAndTvShows.Distinct().OrderBy(s => Guid.NewGuid()).ToList();
 
-                return filmsAndTvShows;
+                return _filmsAndTvShows;
             }
         }
 
