@@ -53,7 +53,7 @@ namespace cyb_code_test_tests
 
         //Checking we retrieve the correct amount of items and that the offset logic works
         [Test]
-        public void ListDisneyCharacters_ReturnsQueriedAmount_True()
+        public void ListDisneyCharactersWithOffset_ReturnsQueriedAmountAndOffsetCharacter_True()
         {
             List<DisneyCharacter> response = disneyCharacterApiService.List(2, 10);
 
