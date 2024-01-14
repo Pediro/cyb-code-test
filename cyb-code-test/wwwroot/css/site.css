@@ -41,7 +41,7 @@ main {
         grid-row-gap: 15px;
     }
 
-        .main-content .answers-container .answer {
+        .main-content .answers-container .item {
             display: flex;
             flex-direction: row;
             justify-content: space-between;
@@ -49,31 +49,36 @@ main {
             padding: 5px;
             font-size: 20px;
             align-items: center;
-            cursor: pointer;
         }
 
-            .main-content .answers-container .answer:hover {
-                opacity: 0.5;
-            }
-
-            .main-content .answers-container .answer.correct {
-                background-color: green;
-                color: white;
-            }
-
-            .main-content .answers-container .answer.incorrect {
-                background-color: darkred;
-                color: white;
-            }
-
-            .main-content .answers-container .answer img {
+            .main-content .answers-container .item img {
                 height: 50px;
                 width: auto;
             }
 
-            .main-content .answers-container .answer text {
+            .main-content .answers-container .item text {
                 padding-right: 10px;
             }
+
+            .main-content .answers-container .item.answer {
+                cursor: pointer;
+            }
+
+                .main-content .answers-container .item.answer:hover {
+                    opacity: 0.5;
+                }
+
+            .main-content .answers-container .item.result.correct {
+                background-color: green;
+                color: white;
+            }
+
+            .main-content .answers-container .item.result.incorrect {
+                background-color: darkred;
+                color: white;
+            }
+
+
 
 button {
     height: 80px;
@@ -114,6 +119,7 @@ header {
     .main-content .answer-options-container {
         grid-template-columns: 1fr;
     }
+
     .main-content .answers-container {
         grid-template-columns: 1fr;
     }

@@ -9,12 +9,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Guess The Character</title>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/spinner.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
+    <header data-set-header-element>
         <h1 data-set-page-title>Title</h1>
     </header>
     <main>
+        <div class="main-content landing-page" data-set-landing-page>
+            <div class="lds-ring"><div></div><div></div><div></div><div></div></div>
+        </div>
         <div class="main-content" data-set-questions-page>
             <img src="https://www.pulsecarshalton.co.uk/wp-content/uploads/2016/08/jk-placeholder-image.jpg" data-set-question-image />
             <div class="answer-options-container">

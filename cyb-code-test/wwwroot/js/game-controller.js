@@ -3,10 +3,45 @@
     questions = {};
     currentQuestion = {};
     currentQuestionIndex = 0;
+    isLoading = false;
 
-    constructor() { }
+    headerElement;
+    answerOptions;
+    pageTitleElement;
+    imageElement;
+    landingPage;
+    questionsPage;
+    submitPage;
+    resultsPage;
+    answersContainer;
+    navButton;
+    pageTitleElement;
+    submitButton;
+    resultsContainer;
+    resetButton;
+
+    constructor() {
+        this.headerElement = document.querySelector("[data-set-header-element]");
+        this.answerOptions = document.querySelectorAll("[data-set-answer]");
+        this.pageTitleElement = document.querySelector("[data-set-page-title]");
+        this.imageElement = document.querySelector("[data-set-question-image]");
+        this.landingPage = document.querySelector("[data-set-landing-page]");
+        this.questionsPage = document.querySelector("[data-set-questions-page]");
+        this.submitPage = document.querySelector("[data-set-submit-page]");
+        this.resultsPage = document.querySelector("[data-set-results-page]");
+        this.answersContainer = document.querySelector("[data-set-answers-container]");
+        this.navButton = document.querySelector("[data-set-nav-button]");
+        this.pageTitleElement = document.querySelector("[data-set-page-title]");
+        this.submitButton = document.querySelector("[data-set-submit-button]");
+        this.resultsContainer = document.querySelector("[data-set-results-container]");
+        this.resetButton = document.querySelector("[data-set-reset-button]");
+
+        this.hideAllPages();
+    }
 
     init() {
+        this.startLoading();
+
         var httpRequest = new XMLHttpRequest();
 
         httpRequest.onreadystatechange = function () {
@@ -20,7 +55,8 @@
 
                 this.initQuestion();
                 this.addEventListeners();
-                this.renderQuestionPage();
+                this.endLoading();
+                this.showQuestionPage();
             }
         }.bind(this);
 
@@ -29,8 +65,7 @@
     }
 
     addEventListeners() {
-        var answerOptions = document.querySelectorAll("[data-set-answer]");
-        answerOptions.forEach((element, index) => {
+        this.answerOptions.forEach((element, index) => {
             element.addEventListener("click", () => {
                 this.questions[this.currentQuestionIndex].selectedAnswer = element.textContent;
                 this.goToNextQuestion();
@@ -41,27 +76,18 @@
     initQuestion() {
         this.currentQuestion = this.questions[this.currentQuestionIndex];
 
-        var pageTitleElement = document.querySelector("[data-set-page-title]");
-        pageTitleElement.textContent = "Which film or tv show has " + this.currentQuestion.characterName + " been in?";
+        this.pageTitleElement.textContent = "Which film or tv show has " + this.currentQuestion.characterName + " been in?";
+        this.imageElement.src = this.currentQuestion.imageUrl;
 
-        var imageElement = document.querySelector("[data-set-question-image]");
-        imageElement.src = this.currentQuestion.imageUrl;
-
-        var answerOptions = document.querySelectorAll("[data-set-answer]");
-        answerOptions.forEach((element, index) => {
+        this.answerOptions.forEach((element, index) => {
             element.textContent = this.currentQuestion.answers[index];
         });
     }
 
-    renderQuestionPage() {
-        var questionsPage = document.querySelector("[data-set-questions-page]");
-        questionsPage.classList.remove("hidden");
-
-        var submitPage = document.querySelector("[data-set-submit-page]");
-        submitPage.classList.add("hidden");
-
-        var resultsPage = document.querySelector("[data-set-results-page]");
-        resultsPage.classList.add("hidden");
+    showQuestionPage() {
+        this.questionsPage.classList.remove("hidden");
+        this.submitPage.classList.add("hidden");
+        this.resultsPage.classList.add("hidden");
     }
 
     goToNextQuestion() {
@@ -78,7 +104,7 @@
             return;
         }
 
-        this.goToNextQuestion();            
+        this.goToNextQuestion();
     }
 
     goToPreviousQuestion() {
@@ -94,10 +120,11 @@
     goToQuestion(event) {
         this.currentQuestionIndex = parseInt(event.currentTarget.dataset.index);
         this.initQuestion();
-        this.renderQuestionPage();
+        this.showQuestionPage();
     }
 
     submitAnswers() {
+        this.startLoading();
         var httpRequest = new XMLHttpRequest();
 
         httpRequest.onreadystatechange = function () {
@@ -108,6 +135,7 @@
 
                 var response = httpRequest.responseText;
                 var results = JSON.parse(response);
+                this.endLoading();
                 this.goToResultsPage(results);
             }
         }.bind(this);
@@ -119,19 +147,11 @@
     }
 
     goToSubmitScreen() {
-        var questionsPage = document.querySelector("[data-set-questions-page]");
-        questionsPage.classList.add("hidden");
-
-        var submitPage = document.querySelector("[data-set-submit-page]");
-        submitPage.classList.remove("hidden");
-
-        var resultsPage = document.querySelector("[data-set-results-page]");
-        resultsPage.classList.add("hidden");
-
-        var answersContainer = document.querySelector("[data-set-answers-container]");
-        var navButton = document.querySelector("[data-set-nav-button]");
+        this.questionsPage.classList.add("hidden");
+        this.submitPage.classList.remove("hidden");
+        this.resultsPage.classList.add("hidden");
         var firstMissingAnswerIndex = null;
-        answersContainer.innerHTML = "";
+        this.answersContainer.innerHTML = "";
 
         this.questions.forEach((question, index) => {
             if (question.selectedAnswer === null && firstMissingAnswerIndex === null) {
@@ -139,6 +159,7 @@
             }
 
             var answer = document.createElement("div");
+            answer.classList.add("item");
             answer.classList.add("answer");
             answer.dataset.index = index;
 
@@ -151,44 +172,34 @@
             answer.appendChild(selectedAnswer);
 
             answer.addEventListener("click", this.goToQuestion.bind(this));
-
-            answersContainer.append(answer);
+            this.answersContainer.append(answer);
         });
 
-        var pageTitleElement = document.querySelector("[data-set-page-title]");
         if (firstMissingAnswerIndex == null) {
-            pageTitleElement.textContent = "Ready to submit your answers?";
-            navButton.classList.add("hidden");
+            this.pageTitleElement.textContent = "Ready to submit your answers?";
+            this.navButton.classList.add("hidden");
         } else {
-            pageTitleElement.textContent = "You've not answered all the questions."
-            navButton.textContent = "Go to unanswered";
-            navButton.classList.remove("hidden");
+            this.pageTitleElement.textContent = "You've not answered all the questions."
+            this.navButton.textContent = "Go to unanswered";
+            this.navButton.classList.remove("hidden");
         }
 
-        answersContainer.append();
-
-        var submitButton = document.querySelector("[data-set-submit-button]");
-        submitButton.addEventListener("click", this.submitAnswers.bind(this));
+        this.answersContainer.append();
+        this.submitButton.addEventListener("click", this.submitAnswers.bind(this));
     }
 
     goToResultsPage(results) {
-        var questionsPage = document.querySelector("[data-set-questions-page]");
-        questionsPage.classList.add("hidden");
-
-        var submitPage = document.querySelector("[data-set-submit-page]");
-        submitPage.classList.add("hidden");
-
-        var resultsPage = document.querySelector("[data-set-results-page]");
-        resultsPage.classList.remove("hidden");
-
-        var resultsContainer = document.querySelector("[data-set-results-container]");
+        this.questionsPage.classList.add("hidden");
+        this.submitPage.classList.add("hidden");
+        this.resultsPage.classList.remove("hidden");
 
         var correctCount = 0;
-        resultsContainer.innerHTML = "";
+        this.resultsContainer.innerHTML = "";
 
         results.forEach((result) => {
             var resultElement = document.createElement("div");
-            resultElement.classList.add("answer");
+            resultElement.classList.add("item");
+            resultElement.classList.add("result");
 
             if (result.isCorrectAnswer) {
                 resultElement.classList.add("correct");
@@ -205,13 +216,35 @@
             selectedAnswer.textContent = result.selectedAnswer ?? "";
             resultElement.appendChild(selectedAnswer);
 
-            resultsContainer.append(resultElement);
+            this.resultsContainer.append(resultElement);
         });
 
-        var pageTitleElement = document.querySelector("[data-set-page-title]");
-        pageTitleElement.textContent = `You got ${correctCount} of the questions correct.`;
+        this.pageTitleElement.textContent = `You got ${correctCount} of the questions correct.`;
 
-        var resetButton = document.querySelector("[data-set-reset-button]");
-        resetButton.addEventListener("click", () => { location.reload(); });
+        this.resetButton.addEventListener("click", () => { location.reload(); });
+    }
+
+    startLoading() {
+        this.isLoading = true;
+
+        this.headerElement.classList.add("hidden");
+        this.questionsPage.classList.add("hidden");
+        this.submitPage.classList.add("hidden");
+        this.resultsPage.classList.add("hidden");
+        this.landingPage.classList.remove("hidden");
+    }
+
+    endLoading() {
+        this.isLoading = false;
+        this.headerElement.classList.remove("hidden");
+        this.landingPage.classList.add("hidden");
+    }
+
+    hideAllPages() {
+        this.headerElement.classList.add("hidden");
+        this.questionsPage.classList.add("hidden");
+        this.submitPage.classList.add("hidden");
+        this.resultsPage.classList.add("hidden");
+        this.landingPage.classList.add("hidden");
     }
 }
