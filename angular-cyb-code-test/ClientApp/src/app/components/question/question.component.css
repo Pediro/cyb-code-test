@@ -1,0 +1,28 @@
+.question-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  margin: auto;
+}
+
+  .question-container img {
+    height: 300px;
+    width: auto;
+  }
+
+  .question-container .answer-options-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 100%;
+    gap: 5px;
+  }
+
+/* Styles for screens below 850px */
+@media only screen and (max-width: 849px) {
+  .question-container .answer-options-container {
+    grid-template-columns: 1fr;
+  }
+}

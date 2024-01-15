@@ -1,5 +1,5 @@
-﻿using cyb_code_test.Models;
-using cyb_code_test.Services;
+﻿using angular_cyb_code_test.Models;
+using angular_cyb_code_test.Services;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using NUnit.Framework.Internal;
@@ -17,7 +17,7 @@ namespace cyb_code_test_tests
         {
             var configurationDictionary = new Dictionary<string, string>
             {
-                { "DisneyCharacterJsonPath", "C:\\Local\\cyb-code-test\\cyb-code-test\\Data\\disney-characters.json" }
+                { "DisneyCharacterJsonPath", "C:\\Local\\cyb-code-test\\angular-cyb-code-test\\Data\\disney-characters.json" }
             };
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(configurationDictionary).Build();
             disneyCharacterApiService = new(configuration);

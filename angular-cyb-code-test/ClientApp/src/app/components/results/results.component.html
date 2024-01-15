@@ -1,0 +1,12 @@
+<header>
+  <h1>{{pageTitle}}</h1>
+</header>
+<div class="container">
+  <div class="results-container">
+    <div class="item result" [ngClass]="result.isCorrectAnswer ? 'correct' : 'incorrect'" *ngFor="let result of results;">
+      <img [src]="result.imageUrl" />
+      <p>{{result.selectedAnswer}}</p>
+    </div>
+  </div>
+  <button (click)="restartQuiz()">Restart Quiz</button>
+</div>

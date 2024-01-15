@@ -1,0 +1,6 @@
+<div class="question-container" *ngIf="question !== undefined">
+  <img [src]="question.imageUrl" />
+  <div class="answer-options-container">
+    <button *ngFor="let answer of question.answers" (click)="saveAnswer(answer)">{{answer}}</button>
+  </div>
+</div>

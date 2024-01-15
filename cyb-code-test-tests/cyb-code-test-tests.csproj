@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\cyb-code-test\cyb-code-test.csproj" />
+    <ProjectReference Include="..\angular-cyb-code-test\angular-cyb-code-test.csproj" />
   </ItemGroup>
 
 </Project>

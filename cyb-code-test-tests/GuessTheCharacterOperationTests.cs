@@ -1,6 +1,6 @@
-﻿using cyb_code_test.Models;
-using cyb_code_test.Operations;
-using cyb_code_test.Services;
+﻿using angular_cyb_code_test.Models;
+using angular_cyb_code_test.Operations;
+using angular_cyb_code_test.Services;
 using Microsoft.Extensions.Configuration;
 
 namespace cyb_code_test_tests
@@ -29,7 +29,7 @@ namespace cyb_code_test_tests
         [Test]
         public void FetchGameDataAsync_ShouldProduceGameData_True()
         {
-            List<Question> questions = _guessTheCharacterOperations.FetchGameData();
+            List<Question> questions = _guessTheCharacterOperations.FetchGameDataAsync();
 
             Assert.AreEqual(questions.Count(), 10);
             int totalNumberOfAnswers = questions.Select(q => q.Answers.Count()).Sum();

@@ -1,0 +1,15 @@
+<header>
+  <h1>{{pageTitle}}</h1>
+</header>
+<div class="container">
+  <div class="answers-container">
+    <div class="item answer" *ngFor="let question of questions; index as i" (click)="goToQuestion(i)">
+      <img [src]="question.imageUrl" />
+      <p>{{question.selectedAnswer}}</p>
+    </div>
+  </div>
+  <div class="buttons-container">
+    <button (click)="submitAnswersAsync()">Submit answers</button>
+    <button *ngIf="hasUnansweredQuestions" (click)="goToUnansweredQuestion()">Go to Unanswered question</button>
+  </div>
+</div>
