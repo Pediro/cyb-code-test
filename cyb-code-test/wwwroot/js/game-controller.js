@@ -19,6 +19,8 @@
     submitButton;
     resultsContainer;
     resetButton;
+    previousButton;
+    skipButton;
 
     constructor() {
         this.headerElement = document.querySelector("[data-set-header-element]");
@@ -35,6 +37,8 @@
         this.submitButton = document.querySelector("[data-set-submit-button]");
         this.resultsContainer = document.querySelector("[data-set-results-container]");
         this.resetButton = document.querySelector("[data-set-reset-button]");
+        this.previousButton = document.querySelector("[data-set-previous-button]");
+        this.skipButton = document.querySelector("[data-set-skip-button]");
 
         this.hideAllPages();
     }
@@ -71,6 +75,8 @@
                 this.goToNextQuestion();
             });
         });
+        this.previousButton.addEventListener("click", this.goToPreviousQuestion.bind(this));
+        this.skipButton.addEventListener("click", this.goToNextQuestion.bind(this));
     }
 
     initQuestion() {
@@ -121,6 +127,17 @@
         this.currentQuestionIndex = parseInt(event.currentTarget.dataset.index);
         this.initQuestion();
         this.showQuestionPage();
+    }
+
+    goToUnansweredQuestion() {
+        for (let i = 0; i < this.questions.length; i++) {
+            if (this.questions[i].selectedAnswer === null) {
+                this.currentQuestionIndex = i;
+                this.initQuestion();
+                this.showQuestionPage();
+                break;
+            }
+        }
     }
 
     submitAnswers() {
@@ -184,7 +201,8 @@
             this.navButton.classList.add("hidden");
         } else {
             this.pageTitleElement.textContent = "You've not answered all the questions."
-            this.navButton.textContent = "Go to unanswered";
+            this.navButton.textContent = "Go to unanswered question";
+            this.navButton.addEventListener("click", this.goToUnansweredQuestion.bind(this));
             this.navButton.classList.remove("hidden");
         }
 
