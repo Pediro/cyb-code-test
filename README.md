@@ -9,7 +9,7 @@ In terms of deciding on a back-end, it was purely opinion-based as I knew I coul
 Honestly, decisions on the tech stack were all opinion-based. I picked the ones I felt most comfortable with but if we required modular elements over many pages I would have gone for React. In theory, the rows in the submit and results page are good candidates for modules rather than the for loops I created. Similarly, if we wanted to move the back-end logic to serverless AWS lambda then I would have picked nodejs or python due to their shorter warm-up times but I am confident in my choice to use C# here.
 
 My libraries include:
-- Newtonsoft.Json, which is the industry accepted package for handing JSON in C#
+- Newtonsoft.Json, which is the industry-accepted package for handing JSON in C#
 - NUnit, a testing package
 
 I also stole a spinner from this page: https://loading.io/css/
