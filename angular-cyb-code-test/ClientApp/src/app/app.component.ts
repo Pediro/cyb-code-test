@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { GameDataService } from './services/game-data.service';
+import { GameController } from './controllers/game.controller';
 
 @Component({
   selector: 'app-root',
@@ -9,11 +9,11 @@ import { GameDataService } from './services/game-data.service';
 export class AppComponent {
   title = 'app';
 
-  constructor(private gameDataService: GameDataService, private router: Router) { }
+  constructor(private gameController: GameController, private router: Router) { }
 
   async ngOnInit() {
-    await this.gameDataService.fetchAsync();
-    this.gameDataService.initGameState();
+    await this.gameController.fetchAsync();
+    this.gameController.initGameState();
 
     this.router.navigate(["quiz"]);
   }

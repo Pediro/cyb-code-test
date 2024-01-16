@@ -5,7 +5,7 @@ import { Question } from "../models/question.model";
 import { Result } from "../models/result.model";
 
 @Injectable({ providedIn: 'root' })
-export class GameDataService {
+export class GameController {
 
   questions!: Question[];
   currentQuestionIndex!: number;

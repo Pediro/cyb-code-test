@@ -1,6 +1,5 @@
 import { Component, Input } from '@angular/core';
 import { Question } from '../../models/question.model';
-import { GameDataService } from '../../services/game-data.service';
 
 @Component({
   selector: 'app-question',

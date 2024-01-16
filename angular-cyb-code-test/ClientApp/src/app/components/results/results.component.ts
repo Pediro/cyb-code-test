@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Result } from '../../models/result.model';
-import { GameDataService } from '../../services/game-data.service';
+import { GameController } from '../../controllers/game.controller';
 
 @Component({
   selector: 'app-results',
@@ -13,20 +13,20 @@ export class ResultsComponent {
   results!: Result[];
   pageTitle!: string;
 
-  constructor(private gameDataService: GameDataService, private router: Router) { }
+  constructor(private gameController: GameController, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
 
-    if (this.gameDataService.questions === undefined) {
+    if (this.gameController.questions === undefined) {
       this.router.navigate([""]);
       return;
     }
 
-    if (this.gameDataService.results === undefined) {
+    if (this.gameController.results === undefined) {
       return;
     }
 
-    this.results = this.gameDataService.results;
+    this.results = this.gameController.results;
 
     let correctCount = 0;
     this.results.forEach((result) => {

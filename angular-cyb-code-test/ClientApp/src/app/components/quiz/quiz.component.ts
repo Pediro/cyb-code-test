@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Question } from '../../models/question.model';
-import { GameDataService } from '../../services/game-data.service';
+import { GameController } from '../../controllers/game.controller';
 import { Router } from '@angular/router';
 
 @Component({
@@ -15,18 +15,18 @@ export class QuizComponent implements OnInit {
   currentQuestion!: Question;
   pageTitle!: string;
 
-  constructor(private gameDataService: GameDataService, private router: Router) { }
+  constructor(private gameController: GameController, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
 
-    if (this.gameDataService.questions === undefined) {
+    if (this.gameController.questions === undefined) {
       this.router.navigate([""]);
       return;
     }
 
-    this.questions = this.gameDataService.questions;
-    this.currentQuestionIndex = this.gameDataService.currentQuestionIndex;
-    this.currentQuestion = this.gameDataService.currentQuestion;
+    this.questions = this.gameController.questions;
+    this.currentQuestionIndex = this.gameController.currentQuestionIndex;
+    this.currentQuestion = this.gameController.currentQuestion;
     this.initPageTitle();
   }
 

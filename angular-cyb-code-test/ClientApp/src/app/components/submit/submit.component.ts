@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Question } from '../../models/question.model';
-import { GameDataService } from '../../services/game-data.service';
+import { GameController } from '../../controllers/game.controller';
 
 @Component({
   selector: 'app-submit',
@@ -15,10 +15,10 @@ export class SubmitComponent {
   firstMissingAnswerIndex!: number | undefined;
   pageTitle!: string;
 
-  constructor(private gameDataService: GameDataService, private router: Router) { }
+  constructor(private gameController: GameController, private router: Router) { }
 
   async ngOnInit(): Promise<void> {
-    this.questions = this.gameDataService.questions;
+    this.questions = this.gameController.questions;
     this.hasUnansweredQuestions = false;
 
     if (this.questions === undefined) {
@@ -43,7 +43,7 @@ export class SubmitComponent {
   }
 
   goToQuestion(index: number) {
-    this.gameDataService.setCurrentQuestion(index);
+    this.gameController.setCurrentQuestion(index);
     this.router.navigate(["quiz"]);
   }
 
@@ -52,12 +52,12 @@ export class SubmitComponent {
       return;
     }
 
-    this.gameDataService.setCurrentQuestion(this.firstMissingAnswerIndex as number);
+    this.gameController.setCurrentQuestion(this.firstMissingAnswerIndex as number);
     this.router.navigate(["quiz"]);
   }
 
   async submitAnswersAsync() {
-    await this.gameDataService.submitAnswers();
+    await this.gameController.submitAnswers();
     this.router.navigate(["results"]);
   }
 }
