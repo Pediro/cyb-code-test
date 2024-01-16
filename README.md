@@ -1,5 +1,3 @@
-# cyb-code-test
-
 ## An Introduction
 
 The web app is sitting in [angular-cyb-code-test](https://github.com/Pediro/cyb-code-test/tree/master/angular-cyb-code-test) and we have some tests in [here](https://github.com/Pediro/cyb-code-test/tree/master/cyb-code-test-tests). Tests were implemented as needed, mainly to provide a simple connection point to check the implemented logic was running as expected, this avoided the need for me to run the entire web app.
