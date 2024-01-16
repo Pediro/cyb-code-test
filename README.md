@@ -18,6 +18,8 @@ Similarly in the backend, I have utilised dependency injection (DI) to inject ob
 
 Initially, I did write the front-end in vanilla javascript, HTML and CSS but it was a pretty messy file of code. Having the entire set of logic in one file with everything relying on each other could have caused issues down the line if I wanted to change one part of the web app. So the project was re-written in Angular2.
 
+In terms of libraries, the main one to note is NUnit which was used to run tests. Newtonsoft Json is another one, which is what the C# developers use for handling JSON data. Other than that, there isn't much to talk about on this topic. The front-end uses mainly Angular base libraries such as router, for handling routing in the web app.  
+
 I also stole a spinner from this page: https://loading.io/css/
 
 ## Design patterns
