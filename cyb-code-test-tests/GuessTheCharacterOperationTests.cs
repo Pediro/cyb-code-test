@@ -16,7 +16,7 @@ namespace cyb_code_test_tests
         {
             var configurationDictionary = new Dictionary<string, string>
             {
-                { "DisneyCharacterJsonPath", "C:\\Local\\cyb-code-test\\cyb-code-test\\Data\\disney-characters.json" }
+                { "DisneyCharacterJsonPath", "..\\..\\..\\..\\angular-cyb-code-test\\Data\\disney-characters.json" }
             };
 
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(configurationDictionary).Build();
@@ -27,9 +27,9 @@ namespace cyb_code_test_tests
 
         //Expecting to find 10 questions where each question has a valid answer and there are no duplicate answers in the available options
         [Test]
-        public void FetchGameDataAsync_ShouldProduceGameData_True()
+        public async Task FetchGameDataAsync_ShouldProduceGameData_TrueAsync()
         {
-            List<Question> questions = _guessTheCharacterOperations.FetchGameDataAsync();
+            List<Question> questions = await _guessTheCharacterOperations.FetchGameDataAsync();
 
             Assert.AreEqual(questions.Count(), 10);
             int totalNumberOfAnswers = questions.Select(q => q.Answers.Count()).Sum();

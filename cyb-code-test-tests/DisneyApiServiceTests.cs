@@ -17,7 +17,7 @@ namespace cyb_code_test_tests
         {
             var configurationDictionary = new Dictionary<string, string>
             {
-                { "DisneyCharacterJsonPath", "C:\\Local\\cyb-code-test\\angular-cyb-code-test\\Data\\disney-characters.json" }
+                { "DisneyCharacterJsonPath", "..\\..\\..\\..\\angular-cyb-code-test\\Data\\disney-characters.json" }
             };
             var configuration = new ConfigurationBuilder().AddInMemoryCollection(configurationDictionary).Build();
             disneyCharacterApiService = new(configuration);
